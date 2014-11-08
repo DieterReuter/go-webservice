@@ -41,17 +41,20 @@ func api_user_profile(w http.ResponseWriter, r *http.Request) {
 }
 
 // curl -X POST -d '{"username":"dieter", "forename":"Dieter", "lastname": "Reuter", "email":"dieter.reuter@me.com"}' http://127.0.0.1:10777/api/v1/users
+// curl -X POST -d '{"username":"hugo", "forename":"Hugo", "lastname": "Boss", "email":"hugo.boss@hugoboss.com"}' http://127.0.0.1:10777/api/v1/users
 func api_v1_users(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		panic(err)
 	}
 	log.Println("Body=", string(body))
+
 	var user UserStruct
 	err = json.Unmarshal(body, &user)
 	if err != nil {
 		panic(err)
 	}
+
 	d, _ := json.Marshal(user)
 	log.Println("JSON=", string(d))
 }
