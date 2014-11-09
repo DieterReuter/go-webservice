@@ -1,7 +1,8 @@
-package main
+package api
 
 import (
 	"encoding/json"
+	"github.com/gorilla/mux"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -12,6 +13,20 @@ type UserStruct struct {
 	Forename string
 	Lastname string
 	Email    string
+}
+
+func init() {
+	rtr := mux.NewRouter()
+	rtr.HandleFunc("/versions", api_versions).Methods("GET")
+	rtr.HandleFunc("/api", api_versions).Methods("GET")
+	rtr.HandleFunc("/api/v0", api_v0_version).Methods("GET")
+	rtr.HandleFunc("/api/v0/version", api_v0_version).Methods("GET")
+	rtr.HandleFunc("/api/v1", api_v1_version).Methods("GET")
+	rtr.HandleFunc("/api/v1/version", api_v1_version).Methods("GET")
+	rtr.HandleFunc("/api/v1/users", api_v1_users).Methods("POST")
+
+	rtr.HandleFunc("/user/dieter/profile", api_user_profile).Methods("GET")
+	http.Handle("/", rtr)
 }
 
 func api_versions(w http.ResponseWriter, r *http.Request) {
